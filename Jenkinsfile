@@ -19,8 +19,8 @@ node {
       stage('commitArgs Parsing') {
         sh "go version"
         sh "go get ./..."
-        sh "go build"
-        sh "ls -asl #./commitArgs ${env.GIT_MSG}"
+        sh "go install"
+        sh "commitArgs ${env.GIT_MSG}"
         sh "pwd"
       }
     }
