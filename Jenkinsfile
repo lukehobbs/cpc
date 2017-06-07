@@ -8,12 +8,11 @@ node {
       script: "git log --pretty=%s -1",
       returnStdout: true
     ).trim()
+    echo env.GIT_MSG
   }
   stage('commitArgs Parsing') {
-    sh "export GOPATH=${env.GOROOT}/bin"
     sh "go get ./..."
     sh "/usr/bin/go install"
-    echo env.GIT_MSG
     sh "commitArgs ${env.GIT_MSG}"
   }
 }
