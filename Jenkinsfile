@@ -1,6 +1,9 @@
 #! /usr/bin/env groovy
 
 node {
+
+  def goHome = tool 'go 1.8.3'
+
   stage('Version Control and Branching Strategy') {
     deleteDir()
     checkout scm
@@ -11,8 +14,8 @@ node {
     echo env.GIT_MSG
   }
   stage('commitArgs Parsing') {
-    sh "go get ./..."
-    sh "/usr/bin/go install"
+    sh "${goHome}/bin/go get ./..."
+    sh "${goHome}/bin/go install"
     sh "commitArgs ${env.GIT_MSG}"
   }
 }
