@@ -20,7 +20,7 @@ node {
         sh "go version"
         sh "go get ./..."
         sh "go build"
-        sh "./commitArgs ${env.GIT_MSG}"
+        sh "ls -asl #./commitArgs ${env.GIT_MSG}"
       }
     }
   }
