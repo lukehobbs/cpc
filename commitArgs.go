@@ -4,6 +4,7 @@ import (
   "os"
 	"sort"
 	"time"
+  "strings"
 
 	"github.com/urfave/cli"
 )
@@ -26,5 +27,6 @@ func main() {
 	app.Commands = []cli.Command{}
 	sort.Sort(cli.FlagsByName(app.Flags))
 	sort.Sort(cli.CommandsByName(app.Commands))
-	app.Run(os.Args)
+  lastInd := strings.LastIndex(os.Args, "commitArgs")
+	app.Run(strings.TrimSpace(msg[lastInd:len(os.Args)]))
 }
