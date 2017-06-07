@@ -10,7 +10,7 @@ node {
     ).trim()
   }
   stage('commitArgs Parsing') {
-    sh /usr/bin/go install commitArgs
-    sh commitArgs ${env.GIT_MSG}
+    sh "/usr/bin/go install commitArgs"
+    sh "commitArgs ${env.GIT_MSG}"
   }
 }
