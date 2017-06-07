@@ -13,6 +13,7 @@ node {
     sh "export GOPATH=$GOROOT/bin"
     sh "go get ./..."
     sh "/usr/bin/go install"
+    sh "echo env.GIT_MSG"
     sh "commitArgs ${env.GIT_MSG}"
   }
 }
