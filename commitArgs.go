@@ -1,7 +1,8 @@
 package main
 
 import (
-	"fmt"
+  "os"
+	"sort"
 	"time"
 
 	"github.com/urfave/cli"
@@ -11,6 +12,8 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "commitArgs"
 	app.Version = "0.0.1"
+  app.HideHelp = true
+  app.HideVersion = true
 	app.Compiled = time.Now()
 	app.Authors = []cli.Author{
 		{
