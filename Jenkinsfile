@@ -22,3 +22,4 @@ node {
       sh "commitArgs ${env.GIT_MSG}"
     }
   }
+}
