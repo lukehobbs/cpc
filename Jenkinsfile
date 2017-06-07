@@ -10,10 +10,10 @@ node {
     ).trim()
   }
   stage('commitArgs Parsing') {
-    sh "export GOPATH=$GOROOT/bin"
+    sh "export GOPATH=${env.GOROOT}/bin"
     sh "go get ./..."
     sh "/usr/bin/go install"
-    sh "echo env.GIT_MSG"
+    echo env.GIT_MSG
     sh "commitArgs ${env.GIT_MSG}"
   }
 }
