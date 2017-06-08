@@ -27,9 +27,9 @@ func main() {
 	app.Action = func(c *cli.Context) error {
 		fmt.Printf("Run full pipeline:\t\t%v\n", c.IsSet("full-pipeline"))
 		fmt.Printf("Leave stack running:\t\t%v\n", c.IsSet("leave-up"))
-    fmt.Printf("Stack should stay up for:\t%d seconds\n", c.Int("runtime"))
+    fmt.Printf("Stack should stay up for:\t%d seconds\n", c.Int("run-time"))
 		fmt.Printf("Run Serverspec tests:\t\t%v\n", c.IsSet("serverspec"))
-		fmt.Printf("Using profile:\t\t\t%s\n", c.String("itme"))
+		fmt.Printf("Using profile:\t\t\t%s\n", c.String("it-me"))
 		return nil
 	}
 	app.Flags = []cli.Flag{
