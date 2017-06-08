@@ -2,4 +2,4 @@
 
 # commitArgs
 
-Pass arguments to your pipeline through your commit messages!
+A CLI for your commit messages!
