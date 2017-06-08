@@ -56,17 +56,17 @@ func main() {
 		for _, b := range Flags.BoolFlags {
 			bs := strconv.FormatBool(c.IsSet(b.Name))
 			fmt.Fprintf(w, "%s:\t%s\n", b.Name, bs)
-			os.Setenv(b.Name, bs)
+			os.Setenv(strings.ToUpper(b.Name), bs)
 		}
 		for _, s := range Flags.StringFlags {
 			ss := c.String(s.Name)
 			fmt.Fprintf(w, "%s:\t%s\n", s.Name, ss)
-			os.Setenv(s.Name, ss)
+			os.Setenv(strings.ToUpper(s.Name), ss)
 		}
 		for _, i := range Flags.IntFlags {
 			is := strconv.Itoa(c.Int(i.Name))
 			fmt.Fprintf(w, "%s:\t%s\n", i.Name, is)
-			os.Setenv(i.Name, is)
+			os.Setenv(strings.ToUpper(i.Name), is)
 		}
 		w.Flush()
 		// TODO: Create yaml/json file containing these variables for the pipeline to reference
