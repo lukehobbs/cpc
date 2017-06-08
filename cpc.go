@@ -15,13 +15,13 @@ import (
 	//"github.com/davecgh/go-spew/spew"
 )
 
-type AppFlags struct {
+type appFlags struct {
 	BoolFlags   []cli.BoolFlag
 	StringFlags []cli.StringFlag
 	IntFlags    []cli.IntFlag
 }
 
-var Flags *AppFlags
+var flags *appFlags
 
 func init() {
 	// Find YAML file in project
@@ -29,7 +29,7 @@ func init() {
 	if err != nil {
 		fmt.Println("ERR: ", err)
 	}
-	err = yaml.Unmarshal(yamlFile, &Flags)
+	err = yaml.Unmarshal(yamlFile, &flags)
 	if err != nil {
 		fmt.Println("ERR: ", err)
 	}
@@ -53,17 +53,17 @@ func main() {
 	app.Action = func(c *cli.Context) error {
 		w := new(tabwriter.Writer)
 		w.Init(os.Stdout, 0, 8, 0, '\t', 0)
-		for _, b := range Flags.BoolFlags {
+		for _, b := range flags.BoolFlags {
 			bs := strconv.FormatBool(c.IsSet(b.Name))
 			fmt.Fprintf(w, "%s:\t%s\n", b.Name, bs)
 			os.Setenv(strings.ToUpper(b.Name), bs)
 		}
-		for _, s := range Flags.StringFlags {
+		for _, s := range flags.StringFlags {
 			ss := c.String(s.Name)
 			fmt.Fprintf(w, "%s:\t%s\n", s.Name, ss)
 			os.Setenv(strings.ToUpper(s.Name), ss)
 		}
-		for _, i := range Flags.IntFlags {
+		for _, i := range flags.IntFlags {
 			is := strconv.Itoa(c.Int(i.Name))
 			fmt.Fprintf(w, "%s:\t%s\n", i.Name, is)
 			os.Setenv(strings.ToUpper(i.Name), is)
@@ -76,13 +76,13 @@ func main() {
 	// Flags specific to cpc will go here
 	}
 
-	for _, b := range Flags.BoolFlags {
+	for _, b := range flags.BoolFlags {
 		app.Flags = append(app.Flags, b)
 	}
-	for _, s := range Flags.StringFlags {
+	for _, s := range flags.StringFlags {
 		app.Flags = append(app.Flags, s)
 	}
-	for _, i := range Flags.IntFlags {
+	for _, i := range flags.IntFlags {
 		app.Flags = append(app.Flags, i)
 	}
 
