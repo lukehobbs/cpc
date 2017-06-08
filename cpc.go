@@ -70,12 +70,6 @@ func main() {
 		}
 		w.Flush()
 		// TODO: Create yaml/json file containing these variables for the pipeline to reference
-		// TODO: OR export env variables
-		fmt.Println()
-		for _, e := range os.Environ() {
-			pair := strings.Split(e, "=")
-			fmt.Printf("%s:%s\n", pair[0], pair[1])
-		}
 		return nil
 	}
 	app.Flags = []cli.Flag{
