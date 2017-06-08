@@ -7,6 +7,7 @@ import (
 	"time"
 	"io/ioutil"
 	"text/tabwriter"
+	"strconv"
 
 	"github.com/urfave/cli"
 	"github.com/ghodss/yaml"
@@ -52,7 +53,7 @@ func main() {
 		w := new(tabwriter.Writer)
 		w.Init(os.Stdout, 0, 8, 0, '\t', 0)
 		for _, b := range Flags.BoolFlags {
-			fmt.Fprintf(w, "%s:\t%v\n", b.Name, string(c.IsSet(b.Name)))
+			fmt.Fprintf(w, "%s:\t%v\n", b.Name, stronv.FormatBool(c.IsSet(b.Name)))
 			os.Setenv(b.Name, c.IsSet(b.Name))
 		}
 		for _, s := range Flags.StringFlags {
@@ -60,7 +61,7 @@ func main() {
 			os.Setenv(s.Name, c.String(s.Name))
 		}
 		for _, i := range Flags.IntFlags {
-			fmt.Fprintf(w, "%s:\t%d\n", i.Name, string(c.Int(i.Name)))
+			fmt.Fprintf(w, "%s:\t%d\n", i.Name, strconv.Itoa((c.Int(i.Name))))
 			os.Setenv(i.Name, c.Int(i.Name))
 		}
 		w.Flush()
