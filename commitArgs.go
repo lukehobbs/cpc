@@ -25,15 +25,17 @@ func main() {
 	app.Usage = "Control CI pipeline using commit messages."
 	app.UsageText = "commit -m \"<your commit message> commitArgs [options] [arguments]\""
 	app.Action = func(c *cli.Context) error {
-    fmt.Printf("Run full pipeline?\t%-5v\n", c.IsSet("full-pipeline"))
-    fmt.Printf("Leave stack running?\t%-5v\n", c.IsSet("leave-up"))
-    fmt.Printf("Run Serverspec tests?\t%-5v\n", c.IsSet("serverspec"))
+    fmt.Printf("Run full pipeline:\t%v\n", c.IsSet("full-pipeline"))
+    fmt.Printf("Leave stack running:\t%v\n", c.IsSet("leave-up"))
+    fmt.Printf("Run Serverspec tests:\t%v\n", c.IsSet("serverspec"))
+    fmt.Printf("Using profile:\t\t%s\n", c.String("itme"))
     return nil
   }
 	app.Flags = []cli.Flag{
 		cli.BoolFlag{Name: "full-pipeline"},
     cli.BoolFlag{Name: "leave-up"},
     cli.BoolFlag{Name: "serverspec"},
+    cli.StringFlag{Name: "itme"},
 	}
 	sort.Sort(cli.FlagsByName(app.Flags))
 	sort.Sort(cli.CommandsByName(app.Commands))
