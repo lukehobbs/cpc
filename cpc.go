@@ -6,9 +6,9 @@ import (
 	"os"
 	"sort"
 	"strconv"
+	"strings"
 	"text/tabwriter"
 	"time"
-	"strings"
 
 	"github.com/ghodss/yaml"
 	"github.com/urfave/cli"
