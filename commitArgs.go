@@ -1,10 +1,10 @@
 package main
 
 import (
-  "os"
+  "fmt"
+	"os"
 	"sort"
 	"time"
-  "strings"
 
 	"github.com/urfave/cli"
 )
@@ -13,8 +13,8 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "commitArgs"
 	app.Version = "0.0.1"
-  app.HideHelp = true
-  app.HideVersion = true
+	app.HideHelp = true
+	app.HideVersion = true
 	app.Compiled = time.Now()
 	app.Authors = []cli.Author{
 		{
@@ -24,9 +24,24 @@ func main() {
 	}
 	app.Usage = "Control CI pipeline using commit messages."
 	app.UsageText = "commit -m \"<your commit message> commitArgs [options] [arguments]\""
-	app.Commands = []cli.Command{}
+	app.Action = func(c *cli.Context) error {
+    fmt.Printf("Run full pipeline?\t%-5v\n", c.IsSet("full-pipeline"))
+    fmt.Printf("Leave stack running?\t%-5v\n", c.IsSet("leave-up"))
+    fmt.Printf("Run Serverspec tests?\t%-5v\n", c.IsSet("serverspec"))
+    return nil
+  }
+	app.Flags = []cli.Flag{
+		cli.BoolFlag{Name: "full-pipeline"},
+    cli.BoolFlag{Name: "leave-up"},
+    cli.BoolFlag{Name: "serverspec"},
+	}
 	sort.Sort(cli.FlagsByName(app.Flags))
 	sort.Sort(cli.CommandsByName(app.Commands))
-  lastInd := strings.LastIndex(os.Args, "commitArgs")
-	app.Run(strings.TrimSpace(msg[lastInd:len(os.Args)]))
+
+	for i, s := range os.Args {
+		if s == "commitArgs" {
+			os.Args = os.Args[i:]
+		}
+	}
+	app.Run(os.Args)
 }
