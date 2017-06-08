@@ -23,6 +23,10 @@ node {
         echo "Commit Message: ${env.GIT_MSG}"
         sh "cpc ${env.GIT_MSG}"
       }
+
+      stage('testing env variables') {
+        echo ${env.run-time}
+      }
     }
   }
 }

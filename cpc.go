@@ -53,16 +53,19 @@ func main() {
 		w.Init(os.Stdout, 0, 8, 0, '\t', 0)
 		for _, b := range Flags.BoolFlags {
 			fmt.Fprintf(w, "%s:\t%v\n", b.Name, c.IsSet(b.Name))
+			os.Setenv(b.Name, c.IsSet(b.Name))
 		}
 		for _, s := range Flags.StringFlags {
 			fmt.Fprintf(w, "%s:\t%s\n", s.Name, c.String(s.Name))
+			os.Setenv(s.Name, c.String(s.Name))
 		}
 		for _, i := range Flags.IntFlags {
 			fmt.Fprintf(w, "%s:\t%d\n", i.Name, c.Int(i.Name))
+			os.Setenv(i.Name, i.Int(i.Name))
 		}
 		w.Flush()
 		// TODO: Create yaml/json file containing these variables for the pipeline to reference
-
+		// TODO: OR export env variables
 		return nil
 	}
 	app.Flags = []cli.Flag{
