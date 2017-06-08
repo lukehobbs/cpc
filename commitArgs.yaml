@@ -1,0 +1,13 @@
+BoolFlags:
+  - Name:     full
+    Value:    false
+  - Name:     tests
+    Value:    true
+  - Name:     persist
+    Value:    false
+StringFlags:
+  - Name:     user
+    Value:    ""
+IntFlags:
+  - Name:     run-time
+    Value:    0
