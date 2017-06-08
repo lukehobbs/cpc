@@ -30,6 +30,7 @@ func main() {
 		fmt.Printf("Stack should stay up for:\t%d seconds\n", c.Int("run-time"))
 		fmt.Printf("Run Serverspec tests:\t\t%v\n", c.IsSet("serverspec"))
 		fmt.Printf("Using profile:\t\t\t%s\n", c.String("it-me"))
+		// TODO: Create yaml/json file containing these variables for the pipeline to reference
 		return nil
 	}
 	app.Flags = []cli.Flag{
