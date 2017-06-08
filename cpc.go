@@ -61,7 +61,7 @@ func main() {
 		}
 		for _, i := range Flags.IntFlags {
 			fmt.Fprintf(w, "%s:\t%d\n", i.Name, c.Int(i.Name))
-			os.Setenv(i.Name, i.Int(i.Name))
+			os.Setenv(i.Name, c.Int(i.Name))
 		}
 		w.Flush()
 		// TODO: Create yaml/json file containing these variables for the pipeline to reference
