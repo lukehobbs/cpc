@@ -25,7 +25,7 @@ node {
       }
 
       stage('testing env variables') {
-        echo env.run-time
+
       }
     }
   }

@@ -2,22 +2,22 @@ package main
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"sort"
-	"time"
-	"io/ioutil"
-	"text/tabwriter"
 	"strconv"
+	"text/tabwriter"
+	"time"
 
-	"github.com/urfave/cli"
 	"github.com/ghodss/yaml"
+	"github.com/urfave/cli"
 	//"github.com/davecgh/go-spew/spew"
 )
 
 type AppFlags struct {
-	BoolFlags 	[]cli.BoolFlag
+	BoolFlags   []cli.BoolFlag
 	StringFlags []cli.StringFlag
-	IntFlags 		[]cli.IntFlag
+	IntFlags    []cli.IntFlag
 }
 
 var Flags *AppFlags
@@ -70,10 +70,15 @@ func main() {
 		w.Flush()
 		// TODO: Create yaml/json file containing these variables for the pipeline to reference
 		// TODO: OR export env variables
+		fmt.Println()
+		for _, e := range os.Environ() {
+			pair := strings.Split(e, "=")
+			fmt.Println(pair[0])
+		}
 		return nil
 	}
 	app.Flags = []cli.Flag{
-		// Flags specific to cpc will go here
+	// Flags specific to cpc will go here
 	}
 
 	for _, b := range Flags.BoolFlags {
