@@ -54,7 +54,7 @@ func main() {
 		w.Init(os.Stdout, 0, 8, 0, '\t', 0)
 		for _, b := range Flags.BoolFlags {
 			bs := strconv.FormatBool(c.IsSet(b.Name))
-			fmt.Fprintf(w, "%s:\t%v\n", b.Name, bs)
+			fmt.Fprintf(w, "%s:\t%s\n", b.Name, bs)
 			os.Setenv(b.Name, bs)
 		}
 		for _, s := range Flags.StringFlags {
@@ -64,7 +64,7 @@ func main() {
 		}
 		for _, i := range Flags.IntFlags {
 			is := strconv.Itoa(c.Int(i.Name))
-			fmt.Fprintf(w, "%s:\t%d\n", i.Name, is)
+			fmt.Fprintf(w, "%s:\t%s\n", i.Name, is)
 			os.Setenv(i.Name, is)
 		}
 		w.Flush()
