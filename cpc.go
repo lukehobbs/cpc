@@ -53,16 +53,19 @@ func main() {
 		w := new(tabwriter.Writer)
 		w.Init(os.Stdout, 0, 8, 0, '\t', 0)
 		for _, b := range Flags.BoolFlags {
-			fmt.Fprintf(w, "%s:\t%v\n", b.Name, stronv.FormatBool(c.IsSet(b.Name)))
-			os.Setenv(b.Name, c.IsSet(b.Name))
+			bs := strconv.FormatBool(c.IsSet(b.Name))
+			fmt.Fprintf(w, "%s:\t%v\n", b.Name, bs)
+			os.Setenv(b.Name, bs)
 		}
 		for _, s := range Flags.StringFlags {
-			fmt.Fprintf(w, "%s:\t%s\n", s.Name, c.String(s.Name))
-			os.Setenv(s.Name, c.String(s.Name))
+			ss := c.String(s.Name)
+			fmt.Fprintf(w, "%s:\t%s\n", s.Name, ss)
+			os.Setenv(s.Name, ss)
 		}
 		for _, i := range Flags.IntFlags {
-			fmt.Fprintf(w, "%s:\t%d\n", i.Name, strconv.Itoa((c.Int(i.Name))))
-			os.Setenv(i.Name, c.Int(i.Name))
+			is := strconv.Itoa(c.Int(i.Name))
+			fmt.Fprintf(w, "%s:\t%d\n", i.Name, is)
+			os.Setenv(i.Name, is)
 		}
 		w.Flush()
 		// TODO: Create yaml/json file containing these variables for the pipeline to reference
