@@ -6,10 +6,11 @@ import (
 	"sort"
 	"time"
 	"io/ioutil"
+	"text/tabwriter"
 
 	"github.com/urfave/cli"
 	"github.com/ghodss/yaml"
-	"github.com/davecgh/go-spew/spew"
+	//"github.com/davecgh/go-spew/spew"
 )
 
 type AppFlags struct {
@@ -30,8 +31,6 @@ func init() {
 	if err != nil {
 		fmt.Println("ERR: ", err)
 	}
-	// Unmarshal YAML into app.Flags
-	spew.Dump(Flags)
 }
 
 func main() {
@@ -50,19 +49,22 @@ func main() {
 	app.Usage = "Control CI pipeline using commit messages."
 	app.UsageText = "commit -m \"<your commit message> commitArgs [options] [arguments]\""
 	app.Action = func(c *cli.Context) error {
-		// fmt.Printf("Run full pipeline:\t\t%v\n", c.IsSet("full-pipeline"))
-		// fmt.Printf("Leave stack running:\t\t%v\n", c.IsSet("leave-up"))
-		// fmt.Printf("Stack should stay up for:\t%d seconds\n", c.Int("run-time"))
-		// fmt.Printf("Run Serverspec tests:\t\t%v\n", c.IsSet("serverspec"))
-		// fmt.Printf("Using profile:\t\t\t%s\n", c.String("it-me"))
-		// // TODO: Create yaml/json file containing these variables for the pipeline to reference
-		// y, err := yaml.Marshal(app.Flags)
-		// if err != nil {
-		// 	fmt.Println("Err: ", err)
-		// }
-		// fmt.Println(string(y))
+		w := new(tabwriter.Writer)
+		w.Init(os.Stdout, 0, 8, 0, '\t', 0)
+		for _, b := range Flags.BoolFlags {
+			fmt.Fprintf(w, "%s:\t%v\n", b.Name, c.IsSet(b.Name))
+		}
+		for _, s := range Flags.StringFlags {
+			fmt.Fprintf(w, "%s:\t%s\n", s.Name, c.String(s.Name))
+		}
+		for _, i := range Flags.IntFlags {
+			fmt.Fprintf(w, "%s:\t%d\n", i.Name, c.Int(i.Name))
+		}
+		w.Flush()
+		// TODO: Create yaml/json file containing these variables for the pipeline to reference
 		return nil
 	}
+
 	for _, b := range Flags.BoolFlags {
 		app.Flags = append(app.Flags, b)
 	}
@@ -72,14 +74,7 @@ func main() {
 	for _, i := range Flags.IntFlags {
 		app.Flags = append(app.Flags, i)
 	}
-	// app.Flags = []cli.Flag{Flags.BoolFlags, Flags.StringFlags, Flags.IntFlags}
-		// []cli.Flag{
-		// cli.BoolFlag{Name: "full-pipeline"},
-		// cli.BoolFlag{Name: "leave-up"},
-		// cli.BoolFlag{Name: "serverspec"},
-		// cli.StringFlag{Name: "it-me"},
-		// cli.IntFlag{Name: "run-time"},
-		// }
+
 	sort.Sort(cli.FlagsByName(app.Flags))
 	sort.Sort(cli.CommandsByName(app.Commands))
 
