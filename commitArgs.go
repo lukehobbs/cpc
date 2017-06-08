@@ -23,7 +23,7 @@ var Flags *AppFlags
 
 func init() {
 	// Find YAML file in project
-	yamlFile, err := ioutil.ReadFile("commitArgs.yaml")
+	yamlFile, err := ioutil.ReadFile("cpc.yaml")
 	if err != nil {
 		fmt.Println("ERR: ", err)
 	}
@@ -35,7 +35,7 @@ func init() {
 
 func main() {
 	app := cli.NewApp()
-	app.Name = "commitArgs"
+	app.Name = "cpc"
 	app.Version = "0.1.0"
 	app.HideHelp = true
 	app.HideVersion = true
@@ -47,7 +47,7 @@ func main() {
 		},
 	}
 	app.Usage = "Control CI pipeline using commit messages."
-	app.UsageText = "commit -m \"<your commit message> commitArgs [options] [arguments]\""
+	app.UsageText = "commit -m \"<your commit message> cpc [options] [arguments]\""
 	app.Action = func(c *cli.Context) error {
 		w := new(tabwriter.Writer)
 		w.Init(os.Stdout, 0, 8, 0, '\t', 0)
@@ -62,7 +62,11 @@ func main() {
 		}
 		w.Flush()
 		// TODO: Create yaml/json file containing these variables for the pipeline to reference
+
 		return nil
+	}
+	app.Flags = []cli.Flag{
+		// Flags specific to cpc will go here
 	}
 
 	for _, b := range Flags.BoolFlags {
@@ -79,7 +83,7 @@ func main() {
 	sort.Sort(cli.CommandsByName(app.Commands))
 
 	for i, s := range os.Args {
-		if s == "commitArgs" {
+		if s == "cpc" {
 			os.Args = os.Args[i:]
 		}
 	}

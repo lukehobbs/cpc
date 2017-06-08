@@ -2,7 +2,7 @@
 
 node {
   def root = tool name: 'Go1.8', type: 'go'
-  ws("${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/src/github.com/lukehobbs/commitArgs") {
+  ws("${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/src/github.com/lukehobbs/cpc") {
     withEnv(["GOROOT=${root}", "GOPATH=${JENKINS_HOME}/jobs/${JOB_NAME}/builds/${BUILD_ID}/", "PATH+GO=${root}/bin"]) {
       env.PATH = "${GOPATH}/bin:$PATH"
 
@@ -16,12 +16,12 @@ node {
         echo env.GIT_MSG
       }
 
-      stage('commitArgs Parsing') {
+      stage('cpc Parsing') {
         sh "go version"
         sh "go get ./..."
         sh "go build"
         echo "Commit Message: ${env.GIT_MSG}"
-        sh "commitArgs ${env.GIT_MSG}"
+        sh "cpc ${env.GIT_MSG}"
       }
     }
   }
