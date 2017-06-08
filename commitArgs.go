@@ -12,7 +12,7 @@ import (
 func main() {
 	app := cli.NewApp()
 	app.Name = "commitArgs"
-	app.Version = "0.0.1"
+	app.Version = "0.1.0"
 	app.HideHelp = true
 	app.HideVersion = true
 	app.Compiled = time.Now()
