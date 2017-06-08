@@ -20,8 +20,8 @@ node {
         sh "go version"
         sh "go get ./..."
         sh "go build"
+        echo "Commit Message: ${env.GIT_MSG}"
         sh "commitArgs ${env.GIT_MSG}"
-        sh "pwd"
       }
     }
   }
