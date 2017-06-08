@@ -27,6 +27,7 @@ func main() {
 	app.Action = func(c *cli.Context) error {
 		fmt.Printf("Run full pipeline:\t%v\n", c.IsSet("full-pipeline"))
 		fmt.Printf("Leave stack running:\t%v\n", c.IsSet("leave-up"))
+    fmt.Pritnf("Stack should stay up for:\t%i seconds", c.Int("runtime"))
 		fmt.Printf("Run Serverspec tests:\t%v\n", c.IsSet("serverspec"))
 		fmt.Printf("Using profile:\t\t%s\n", c.String("itme"))
 		return nil
@@ -36,6 +37,7 @@ func main() {
 		cli.BoolFlag{Name: "leave-up"},
 		cli.BoolFlag{Name: "serverspec"},
 		cli.StringFlag{Name: "itme"},
+    cli.IntFlag{Name: "runtime"}
 	}
 	sort.Sort(cli.FlagsByName(app.Flags))
 	sort.Sort(cli.CommandsByName(app.Commands))
