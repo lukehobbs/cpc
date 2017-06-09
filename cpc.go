@@ -72,7 +72,6 @@ func main() {
 			os.Setenv(strings.ToUpper(s[0]), strconv.Itoa(v))
 		}
 		w.Flush()
-		// TODO: Create yaml/json file containing these variables for the pipeline to reference
 		return nil
 	}
 	app.Flags = []cli.Flag{

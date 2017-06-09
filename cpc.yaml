@@ -1,8 +1,10 @@
 BoolFlags:
-  - Name: "full, f"
-    Usage:    "Used if a full end-to-end pipeline is desired"
+  - Name:  "full, f"
+    Usage: "Used if a full end-to-end pipeline is desired"
 StringFlags:
-  - Name: "name, n"
+  - Name:  "name, n"
+    Usage: "Name to be associated with the stack"
 IntFlags:
-  - Name: "persist, p"
+  - Name:  "persist, p"
     Value: -10
+    Usage: "How long should this stack exist?"
