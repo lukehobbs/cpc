@@ -12,7 +12,7 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/urfave/cli"
-	"github.com/davecgh/go-spew/spew"
+	//"github.com/davecgh/go-spew/spew"
 )
 
 type appFlags struct {
@@ -53,20 +53,23 @@ func main() {
 	app.Action = func(c *cli.Context) error {
 		w := new(tabwriter.Writer)
 		w.Init(os.Stdout, 0, 8, 0, '\t', 0)
-		for _, b := range flags.BoolFlags {
-			bs := strconv.FormatBool(c.IsSet(b.Name))
-			fmt.Fprintf(w, "%s:\t%s\n", b.Name, bs)
-			os.Setenv(strings.ToUpper(b.Name), bs)
+		for _, f := range flags.BoolFlags {
+			s := splitName(f.Name)
+			v := c.IsSet(s[0])
+			fmt.Fprintf(w, "%s:\t\t\t  %v\n", s[0], v)
+			os.Setenv(strings.ToUpper(s[0]), strconv.FormatBool(v))
 		}
-		for _, s := range flags.StringFlags {
-			ss := c.String(s.Name)
-			fmt.Fprintf(w, "%s:\t%s\n", s.Name, ss)
-			os.Setenv(strings.ToUpper(s.Name), ss)
+		for _, f := range flags.StringFlags {
+			s := splitName(f.Name)
+			v := c.String(s[0])
+			fmt.Fprintf(w, "%s:\t\t\t  %s\n", s[0], v)
+			os.Setenv(strings.ToUpper(s[0]), v)
 		}
-		for _, i := range flags.IntFlags {
-			is := strconv.Itoa(c.Int(i.Name))
-			fmt.Fprintf(w, "%s:\t\t\t%s\n", i.Name, is)
-			os.Setenv(strings.ToUpper(i.Name), is)
+		for _, f := range flags.IntFlags {
+			s := splitName(f.Name)
+			v := c.Int(s[0])
+			fmt.Fprintf(w, "%s:\t\t\t  %v\n", s[0], v)
+			os.Setenv(strings.ToUpper(s[0]), strconv.Itoa(v))
 		}
 		w.Flush()
 		// TODO: Create yaml/json file containing these variables for the pipeline to reference
@@ -95,4 +98,8 @@ func main() {
 		}
 	}
 	app.Run(os.Args)
+}
+
+func splitName(s string) []string {
+	return strings.Split(s, ",")
 }

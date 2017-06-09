@@ -1,16 +1,8 @@
 BoolFlags:
-  - Name:     full
+  - Name: "full, f"
     Usage:    "Used if a full end-to-end pipeline is desired"
-    Aliases:  "f"
-  - Name:     tests
-    Usage:    "Specifies whether integration tests should be performed"
-  - Name:     persist
-    Usage:    "Specifies whether the stack should be destroyed after build is complete"
 StringFlags:
-  - Name:     user
-    Value:    "default"
-    Usage:    "Specifies a user profile to consider during stack creation"
+  - Name: "name, n"
 IntFlags:
-  - Name:     run-time
-    Value:    100
-    Usage:    "Specifies how long the stack should stay alive"
+  - Name: "persist, p"
+    Value: -10
