@@ -12,7 +12,7 @@ import (
 
 	"github.com/ghodss/yaml"
 	"github.com/urfave/cli"
-	//"github.com/davecgh/go-spew/spew"
+	"github.com/davecgh/go-spew/spew"
 )
 
 type AppFlags struct {
@@ -65,7 +65,7 @@ func main() {
 		}
 		for _, i := range Flags.IntFlags {
 			is := strconv.Itoa(c.Int(i.Name))
-			fmt.Fprintf(w, "%s:\t%s\n", i.Name, is)
+			fmt.Fprintf(w, "%s:\t\t\t%s\n", i.Name, is)
 			os.Setenv(strings.ToUpper(i.Name), is)
 		}
 		w.Flush()

@@ -1,6 +1,7 @@
 BoolFlags:
   - Name:     full
     Usage:    "Used if a full end-to-end pipeline is desired"
+    Aliases:  "f"
   - Name:     tests
     Usage:    "Specifies whether integration tests should be performed"
   - Name:     persist
