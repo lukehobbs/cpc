@@ -85,17 +85,24 @@ func setFlags(app *cli.App) {
 	for _, i := range flags.IntFlags {
 		app.Flags = append(app.Flags, i)
 	}
-	// Check if commit message contains 'cpc'.
-	if !contains(os.Args, "cpc") {
-		log.Println("WARN: Commit message does not contain 'cpc'.")
-		os.Exit(1)
-	}
 	// Set flag values from commit message.
 	for i, s := range os.Args {
 		if s == "cpc" {
 			os.Args = os.Args[i:]
+			return;
+		}
+		if strings.Contains(s, " cpc ") {
+			a := strings.Split(os.Args[i], " ")
+			for j, t := range a {
+				if t == "cpc" {
+					os.Args = a[j:]
+				}
+			}
+			return;
 		}
 	}
+	log.Println("WARN: Commit message does not contain 'cpc'.")
+	os.Exit(0)
 }
 
 func printFlags(c *cli.Context) {
@@ -173,11 +180,3 @@ func splitName(s string) []string {
 	return strings.Split(s, ",")
 }
 
-func contains(s []string, b string) bool {
-	for _, a := range s {
-		if a == b {
-			return true
-		}
-	}
-	return false
-}
