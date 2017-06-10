@@ -6,5 +6,5 @@ StringFlags:
     Usage: "Name to be associated with the stack"
 IntFlags:
   - Name:  "persist, p"
-    Value: -10
+    Value: -1
     Usage: "How long should this stack exist?"
