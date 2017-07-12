@@ -122,7 +122,7 @@ func formatEnvs(c *cli.Context) string {
 		v := c.Int(s[0])
 		a = append(a, fmt.Sprintf("%s=%s", strings.ToUpper(s[0]), strconv.Itoa(v)))
 	}
-	b.WriteString(strings.Join(a, ","))
+	b.WriteString(strings.Join(a, ", "))
 	return b.String()
 }
 
