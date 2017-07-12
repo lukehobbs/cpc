@@ -100,7 +100,7 @@ func setFlags(app *cli.App) {
 			return;
 		}
 	}
-	log.Println("INFO: Commit message does not contain 'cpc'.")
+	// log.Println("INFO: Commit message does not contain 'cpc'.")
 	return;
 }
 
@@ -109,17 +109,19 @@ func formatEnvs(c *cli.Context) string {
 	for _, f := range flags.BoolFlags {
 		s := splitName(f.Name)
 		v := c.IsSet(s[0])
-		b.WriteString(fmt.Sprintf("export %s='%s'\n", strings.ToUpper(s[0]), strconv.FormatBool(v)))
+		b.WriteString(fmt.Sprintf("%s=%s\n", strings.ToUpper(s[0]), strconv.FormatBool(v)))
 	}
 	for _, f := range flags.StringFlags {
 		s := splitName(f.Name)
 		v := c.String(s[0])
-		b.WriteString(fmt.Sprintf("export %s='%s'\n", strings.ToUpper(s[0]), v))
+		if v != "" {
+			b.WriteString(fmt.Sprintf("%s=%s\n", strings.ToUpper(s[0]), v))
+		}
 	}
 	for _, f := range flags.IntFlags {
 		s := splitName(f.Name)
 		v := c.Int(s[0])
-		b.WriteString(fmt.Sprintf("export %s='%s'\n", strings.ToUpper(s[0]), strconv.Itoa(v)))
+		b.WriteString(fmt.Sprintf("%s=%s\n", strings.ToUpper(s[0]), strconv.Itoa(v)))
 	}
 	return b.String()
 }
