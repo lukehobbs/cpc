@@ -110,17 +110,17 @@ func formatEnvs(c *cli.Context) string {
 	for _, f := range flags.BoolFlags {
 		s := splitName(f.Name)
 		v := c.IsSet(s[0])
-		a = append(a, fmt.Sprintf("%s=%s", strings.ToUpper(s[0]), strconv.FormatBool(v)))
+		a = append(a, fmt.Sprintf("\'%s=%s\'", strings.ToUpper(s[0]), strconv.FormatBool(v)))
 	}
 	for _, f := range flags.StringFlags {
 		s := splitName(f.Name)
 		v := c.String(s[0])
-			a = append(a, fmt.Sprintf("%s=%s", strings.ToUpper(s[0]), v))
+			a = append(a, fmt.Sprintf("\'%s=%s\'", strings.ToUpper(s[0]), v))
 	}
 	for _, f := range flags.IntFlags {
 		s := splitName(f.Name)
 		v := c.Int(s[0])
-		a = append(a, fmt.Sprintf("%s=%s", strings.ToUpper(s[0]), strconv.Itoa(v)))
+		a = append(a, fmt.Sprintf("\'%s=%s\'", strings.ToUpper(s[0]), strconv.Itoa(v)))
 	}
 	b.WriteString(strings.Join(a, ", "))
 	return b.String()
