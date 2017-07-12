@@ -2,13 +2,14 @@ package main
 
 import (
 	"fmt"
+	"bytes"
 	"io/ioutil"
 	"log"
 	"os"
 	"sort"
 	"strconv"
 	"strings"
-	"text/tabwriter"
+// "text/tabwriter"
 	"time"
 
 	"github.com/ghodss/yaml"
@@ -55,13 +56,11 @@ func main() {
 	app.Usage = "Control CI pipeline using commit messages."
 	app.UsageText = "commit -m \"<your commit message> cpc [options] [arguments]\""
 	app.Action = func(c *cli.Context) error {
-		printFlags(c)
-		exportEnvs(c)
+		// printFlags(c)
+		fmt.Println(formatEnvs(c))
 		return nil
 	}
 	app.Flags = []cli.Flag{
-	// Flags specific to cpc will go here.
-	// i.e. --json, --yaml, --envs for output format.
 	}
 
 	sort.Sort(cli.FlagsByName(app.Flags))
@@ -101,82 +100,30 @@ func setFlags(app *cli.App) {
 			return;
 		}
 	}
-	log.Println("WARN: Commit message does not contain 'cpc'.")
-	os.Exit(0)
+	log.Println("INFO: Commit message does not contain 'cpc'.")
+	return;
 }
 
-func printFlags(c *cli.Context) {
-	w := new(tabwriter.Writer)
-	w.Init(os.Stdout, 0, 8, 0, '\t', 0)
+func formatEnvs(c *cli.Context) string {
+	var b bytes.Buffer
 	for _, f := range flags.BoolFlags {
 		s := splitName(f.Name)
 		v := c.IsSet(s[0])
-		_, err := fmt.Fprintf(w, "%s:\t\t\t  %v\n", s[0], v)
-		if err != nil {
-			log.Fatal("ERROR: ", err)
-		}
+		b.WriteString(fmt.Sprintf("export %s='%s'\n", strings.ToUpper(s[0]), strconv.FormatBool(v)))
 	}
 	for _, f := range flags.StringFlags {
 		s := splitName(f.Name)
 		v := c.String(s[0])
-		_, err := fmt.Fprintf(w, "%s:\t\t\t  %s\n", s[0], v)
-		if err != nil {
-			log.Fatal("ERROR: ", err)
-		}
+		b.WriteString(fmt.Sprintf("export %s='%s'\n", strings.ToUpper(s[0]), v))
 	}
 	for _, f := range flags.IntFlags {
 		s := splitName(f.Name)
 		v := c.Int(s[0])
-		_, err := fmt.Fprintf(w, "%s:\t\t\t  %v\n", s[0], v)
-		if err != nil {
-			log.Fatal("ERROR: ", err)
-		}
+		b.WriteString(fmt.Sprintf("export %s='%s'\n", strings.ToUpper(s[0]), strconv.Itoa(v)))
 	}
-	err := w.Flush()
-	if err != nil {
-		log.Fatal("ERROR: ", err)
-	}
-}
-
-func exportEnvs(c *cli.Context) {
-	fo, err := os.OpenFile("cpc-out.sh", os.O_RDWR|os.O_CREATE, 0744)
-	if err != nil {
-		log.Fatal("ERROR: ", err)
-	}
-	_, err = fmt.Fprintf(fo, "#! /usr/bin/env bash\n")
-	if err != nil {
-		log.Fatal("ERROR: ", err)
-	}
-	for _, f := range flags.BoolFlags {
-		s := splitName(f.Name)
-		v := c.IsSet(s[0])
-		_, err := fmt.Fprintf(fo, "export %s=\"%s\"\n", strings.ToUpper(s[0]), strconv.FormatBool(v))
-		if err != nil {
-			log.Fatal("ERROR: ", err)
-		}
-	}
-	for _, f := range flags.StringFlags {
-		s := splitName(f.Name)
-		v := c.String(s[0])
-		_, err := fmt.Fprintf(fo, "export %s=\"%s\"\n", strings.ToUpper(s[0]), v)
-		if err != nil {
-			log.Fatal("ERROR: ", err)
-		}
-	}
-	for _, f := range flags.IntFlags {
-		s := splitName(f.Name)
-		v := c.Int(s[0])
-		_, err := fmt.Fprintf(fo, "export %s=\"%s\"\n", strings.ToUpper(s[0]), strconv.Itoa(v))
-		if err != nil {
-			log.Fatal("ERROR: ", err)
-		}
-	}
-	if err := fo.Close(); err != nil {
-		log.Fatal("ERROR: ", err)
-	}
+	return b.String()
 }
 
 func splitName(s string) []string {
 	return strings.Split(s, ",")
 }
-
