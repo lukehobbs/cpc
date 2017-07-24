@@ -9,7 +9,6 @@ import (
 	"sort"
 	"strconv"
 	"strings"
-// "text/tabwriter"
 	"time"
 
 	"github.com/ghodss/yaml"
@@ -27,11 +26,16 @@ var flags *appFlags
 func init() {
 	// Check if yaml file exists in root of project.
 	if _, err := os.Stat("cpc.yaml"); os.IsNotExist(err) {
-		log.Fatal("ERROR: cpc.yaml must exist in the root directory of your project.")
+        if _, err := os.Stat("cpc.yml"); os.IsNotExist(err) {
+            log.Fatal("ERROR: cpc.yaml or cpc.yml must exist in the root directory of your project.")
+        }
 	}
 	yamlFile, err := ioutil.ReadFile("cpc.yaml")
 	if err != nil {
-		log.Fatal("ERROR: ", err)
+        yamlFile, err = ioutil.ReadFile("cpc.yml")
+        if err != nil {
+            log.Fatal("ERROR: ", err)
+        }
 	}
 	// Unmarshal cpc.yaml into $yamlFile.
 	err = yaml.Unmarshal(yamlFile, &flags)
